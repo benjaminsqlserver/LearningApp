@@ -1,0 +1,167 @@
+@using Radzen
+@using Radzen.Blazor
+
+@page "/shapes-exercise"
+
+@attribute [Authorize]
+<!-- Restricts page access to authenticated users only. -->
+
+<PageTitle>Shapes Learning Exercise</PageTitle>
+<!-- Sets the browser tab title. -->
+<!-- ======================== MAIN CONTAINER CARD ======================== -->
+<RadzenCard class="rz-my-4">
+    <!-- Page Header -->
+    <RadzenText TextStyle="TextStyle.H3" TagName="TagName.H1" class="rz-mb-4">
+        Shapes Learning Exercise
+    </RadzenText>
+
+    <!-- ======================== USER'S BEST SCORE ALERT ======================== -->
+    @if (highestScore > 0)
+    {
+        <RadzenAlert AlertStyle="AlertStyle.Info" Variant="Variant.Flat" Shade="Shade.Lighter" class="rz-mb-4">
+            <RadzenText TextStyle="TextStyle.Subtitle2">
+                <strong>Your Best Score:</strong> @highestScore out of @maxPossibleScore
+                (@(Math.Round((double)highestScore / maxPossibleScore * 100, 1))%)
+            </RadzenText>
+        </RadzenAlert>
+    }
+
+    <!-- ======================== MAIN CONTENT AREA ======================== -->
+    @if (!isSubmitted)
+    {
+        <!-- ======== INSTRUCTIONS SECTION ======== -->
+        <RadzenAlert AlertStyle="AlertStyle.Info" Variant="Variant.Flat" Shade="Shade.Lighter" class="rz-mb-4">
+            <RadzenText TextStyle="TextStyle.Body1">
+                <strong>Instructions:</strong> Look at each shape below and type its name in the textbox underneath.
+                When you're done, click the Submit button to check your answers.
+            </RadzenText>
+        </RadzenAlert>
+
+        <!-- ======== LIST OF POSSIBLE SHAPES ======== -->
+        <RadzenCard class="rz-mb-4" style="background-color: #f5f5f5;">
+            <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-mb-2">
+                <strong>Shape Names to Use:</strong>
+            </RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2">
+                Cuboid, Cylinder, Trapezoid, Diamond, Pyramid, Semicircle, Oval, Sphere, Prism, Cylinder,
+                Parallelogram, Rhombus, Scalene Triangle, Right Triangle, Pentagon, Circle, Sector, Hexagon
+            </RadzenText>
+        </RadzenCard>
+
+        <!-- ======== SHAPE INPUT GRID ======== -->
+        <RadzenRow Gap="2rem" class="rz-my-4">
+            @foreach (var shape in shapes)
+            {
+                <!-- Each shape displayed as a card in a responsive grid layout -->
+                <RadzenColumn Size="12" SizeMD="6" SizeLG="4" SizeXL="3">
+                    <RadzenCard style="text-align: center; min-height: 280px;">
+                        <!-- Shape SVG Render Area -->
+                        <div style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                            @((MarkupString)shape.SvgContent)
+                        </div>
+                        <!-- User Input Field for Shape Name -->
+                        <RadzenTextBox @bind-Value="shape.UserAnswer"
+                                       Placeholder="Enter shape name"
+                                       Style="width: 100%; margin-top: 1rem;" />
+                    </RadzenCard>
+                </RadzenColumn>
+            }
+        </RadzenRow>
+
+        <!-- ======== SUBMIT BUTTON ======== -->
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" class="rz-mt-4">
+            <RadzenButton Text="Submit Answers"
+                          Click="SubmitAnswers"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Size="ButtonSize.Large" />
+        </RadzenStack>
+    }
+    else
+    {
+        <!-- ======================== RESULTS SECTION (POST-SUBMISSION) ======================== -->
+        <!-- ======== SCORE ALERT (color-coded by performance) ======== -->
+        <RadzenAlert AlertStyle="@(score >= 15 ? AlertStyle.Success : score >= 10 ? AlertStyle.Warning : AlertStyle.Danger)"
+                     Variant="Variant.Flat"
+                     class="rz-mb-4">
+            <RadzenText TextStyle="TextStyle.H5">
+                Your Score: @score out of @maxPossibleScore
+                (@(Math.Round((double)score / maxPossibleScore * 100, 1))%)
+            </RadzenText>
+
+            <!-- Display previous high score if available -->
+            @if (highestScore > 0)
+            {
+                <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-mt-2">
+                    <strong>Your Highest Score:</strong> @highestScore out of @maxPossibleScore
+                    (@(Math.Round((double)highestScore / maxPossibleScore * 100, 1))%)
+                </RadzenText>
+            }
+
+            <!-- Perfect Score Message -->
+            @if (score == maxPossibleScore)
+            {
+                <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-mt-2" style="color: #4caf50;">
+                    🎉 Perfect Score! Excellent work!
+                </RadzenText>
+            }
+            <!-- New High Score Message -->
+            else if (score == highestScore && score > 0)
+            {
+            <RadzenText TextStyle="TextStyle.Subtitle2" class="rz-mt-2" style="color: #ff9800;">
+                ⭐ New High Score!
+            </RadzenText>
+            }
+        </RadzenAlert>
+
+        <!-- ======== RESULTS HEADER ======== -->
+        <RadzenText TextStyle="TextStyle.Subtitle1" class="rz-mb-3">
+            <strong>Results:</strong>
+        </RadzenText>
+
+        <!-- ======== DETAILED RESULT GRID ======== -->
+        <RadzenRow Gap="2rem" class="rz-my-4">
+            @foreach (var shape in shapes)
+            {
+                <RadzenColumn Size="12" SizeMD="6" SizeLG="4" SizeXL="3">
+                    <!-- Card styled dynamically based on correctness -->
+                    <RadzenCard Style="@GetResultCardStyle(shape)">
+                        <!-- Shape Display -->
+                        <div style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                            @((MarkupString)shape.SvgContent)
+                        </div>
+
+                        <!-- Result Information -->
+                        <div style="margin-top: 1rem;">
+                            <!-- Badge showing whether answer was correct -->
+                            <RadzenBadge BadgeStyle="@(shape.IsCorrect? BadgeStyle.Success: BadgeStyle.Danger)"
+                                         Text="@(shape.IsCorrect ? "Correct!" : "Incorrect")"
+                                         class="rz-mb-2" />
+
+                            <!-- User's Submitted Answer -->
+                            <RadzenText TextStyle="TextStyle.Body2">
+                                <strong>Your Answer:</strong>
+                                @(string.IsNullOrWhiteSpace(shape.UserAnswer) ? "(No answer)" : shape.UserAnswer)
+                            </RadzenText>
+
+                            <!-- Show Correct Answer if User was Wrong -->
+                            @if (!shape.IsCorrect)
+                            {
+                                <RadzenText TextStyle="TextStyle.Body2" style="color: #4caf50;">
+                                    <strong>Correct Answer:</strong> @shape.CorrectAnswer
+                                </RadzenText>
+                            }
+                        </div>
+                    </RadzenCard>
+                </RadzenColumn>
+            }
+        </RadzenRow>
+
+        <!-- ======== RETRY BUTTON ======== -->
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" class="rz-mt-4">
+            <RadzenButton Text="Try Again"
+                          Click="ResetExercise"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Size="ButtonSize.Large" />
+        </RadzenStack>
+    }
+</RadzenCard>

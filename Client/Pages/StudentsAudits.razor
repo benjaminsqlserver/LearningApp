@@ -1,0 +1,134 @@
+@page "/students-audits"
+@attribute [Authorize]
+
+<PageTitle>StudentsAudits</PageTitle>
+<RadzenStack>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenText Text="StudentsAudits" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                <RadzenSplitButton Icon="get_app" Text="Export" Click="@ExportClick" Variant="Variant.Flat" Shade="Shade.Lighter">
+                    <RadzenSplitButtonItem Text="Excel" Value="xlsx" />
+                    <RadzenSplitButtonItem Text="CSV" Value="csv" />
+                </RadzenSplitButton>
+                <RadzenButton Icon="add_circle_outline" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenTextBox Placeholder="Search ..." style="display: block; width: 100%" @oninput="@Search" aria-label="Search by all string columns" />
+    <RadzenRow>
+      <RadzenColumn SizeMD=12>
+        <RadzenDataGrid @ref="grid0" ColumnWidth="200px"   AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" ShowPagingSummary="true" PageSizeOptions=@(new int[]{5, 10, 20, 30})
+            Data="@(studentsAudits)" LoadData="@Grid0LoadData" Count="@count" TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" RowDoubleClick="@EditRow">
+            <Columns>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="AuditID" Title="AuditID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentID" Title="StudentID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentAdmissionNumber" Title="Student Admission Number">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentSurname" Title="Student Surname">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentFirstName" Title="Student First Name">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentOtherNames" Title="Student Other Names">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentSexID" Title="Student SexID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentDateOfBirth" Title="Student Date Of Birth">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentClassID" Title="Student ClassID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentNationalityID" Title="Student NationalityID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentStateID" Title="Student StateID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentLocalGovernmentAreaID" Title="Student Local Government AreaID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentTown" Title="Student Town">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentResidentialAddress" Title="Student Residential Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentPhoto" Title="Student Photo">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentRegistrationDate" Title="Student Registration Date">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="StudentGraduationDateOrDateStudentLeftTheSchool" Title="Student Graduation Date Or Date Student Left The School">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherSurname" Title="Father Surname">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherFirstName" Title="Father First Name">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherOtherNames" Title="Father Other Names">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherNationalityID" Title="Father NationalityID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherTelephone1" Title="Father Telephone1">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherTelephone2" Title="Father Telephone2">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherEmailAddress" Title="Father Email Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherProfessionID" Title="Father ProfessionID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="FatherResidentialAddress" Title="Father Residential Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherSurname" Title="Mother Surname">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherFirstName" Title="Mother First Name">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherOtherNames" Title="Mother Other Names">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherNationalityID" Title="Mother NationalityID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherTelephone1" Title="Mother Telephone1">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherTelephone2" Title="Mother Telephone2">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherEmailAddress" Title="Mother Email Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherProfessionID" Title="Mother ProfessionID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="MotherResidentialAddress" Title="Mother Residential Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianSurname" Title="Guardian Surname">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianFirstName" Title="Guardian First Name">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianOtherNames" Title="Guardian Other Names">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianNationalityID" Title="Guardian NationalityID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianTelephone1" Title="Guardian Telephone1">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianTelephone2" Title="Guardian Telephone2">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianEmailAddress" Title="Guardian Email Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianProfessionID" Title="Guardian ProfessionID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="GuardianResidentialAddress" Title="Guardian Residential Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="ActionType" Title="Action Type">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="ChangedOn" Title="Changed On">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Property="ChangedBy" Title="Changed By">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentsAudit" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="studentsAudit">
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                            Shade="Shade.Lighter" Variant="Variant.Flat"
+                            Click=@(args => GridDeleteButtonClick(args, studentsAudit)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+
+        </RadzenDataGrid>
+
+    </RadzenColumn>
+  </RadzenRow>
+</RadzenStack>

@@ -1,0 +1,64 @@
+@page "/student-exercise-results-audits"
+@attribute [Authorize]
+
+<PageTitle>StudentExerciseResultsAudits</PageTitle>
+<RadzenStack>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenText Text="StudentExerciseResultsAudits" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                <RadzenSplitButton Icon="get_app" Text="Export" Click="@ExportClick" Variant="Variant.Flat" Shade="Shade.Lighter">
+                    <RadzenSplitButtonItem Text="Excel" Value="xlsx" />
+                    <RadzenSplitButtonItem Text="CSV" Value="csv" />
+                </RadzenSplitButton>
+                <RadzenButton Icon="add_circle_outline" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenTextBox Placeholder="Search ..." style="display: block; width: 100%" @oninput="@Search" aria-label="Search by all string columns" />
+    <RadzenRow>
+      <RadzenColumn SizeMD=12>
+        <RadzenDataGrid @ref="grid0" ColumnWidth="200px"   AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" ShowPagingSummary="true" PageSizeOptions=@(new int[]{5, 10, 20, 30})
+            Data="@(studentExerciseResultsAudits)" LoadData="@Grid0LoadData" Count="@count" TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" RowDoubleClick="@EditRow">
+            <Columns>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="AuditID" Title="AuditID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="ResultID" Title="ResultID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="StudentID" Title="StudentID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="ExerciseID" Title="ExerciseID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="DateTaken" Title="Date Taken">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="TimeTaken" Title="Time Taken">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="MarkObtainable" Title="Mark Obtainable">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="MarkObtained" Title="Mark Obtained">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="UserID" Title="UserID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="ActionType" Title="Action Type">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="ChangedOn" Title="Changed On">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Property="ChangedBy" Title="Changed By">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.StudentExerciseResultsAudit" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="studentExerciseResultsAudit">
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                            Shade="Shade.Lighter" Variant="Variant.Flat"
+                            Click=@(args => GridDeleteButtonClick(args, studentExerciseResultsAudit)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+
+        </RadzenDataGrid>
+
+    </RadzenColumn>
+  </RadzenRow>
+</RadzenStack>

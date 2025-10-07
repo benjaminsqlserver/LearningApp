@@ -1,0 +1,126 @@
+@page "/students"
+@attribute [Authorize]
+
+<PageTitle>Students</PageTitle>
+<RadzenStack>
+    <RadzenRow AlignItems="AlignItems.Center">
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenText Text="Students" TextStyle="TextStyle.H3" TagName="TagName.H1" style="margin: 0" />
+        </RadzenColumn>
+        <RadzenColumn Size="12" SizeMD="6">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+                <RadzenSplitButton Icon="get_app" Text="Export" Click="@ExportClick" Variant="Variant.Flat" Shade="Shade.Lighter">
+                    <RadzenSplitButtonItem Text="Excel" Value="xlsx" />
+                    <RadzenSplitButtonItem Text="CSV" Value="csv" />
+                </RadzenSplitButton>
+                <RadzenButton Icon="add_circle_outline" Text="Add" Click="@AddButtonClick" Variant="Variant.Flat" />
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenTextBox Placeholder="Search ..." style="display: block; width: 100%" @oninput="@Search" aria-label="Search by all string columns" />
+    <RadzenRow>
+      <RadzenColumn SizeMD=12>
+        <RadzenDataGrid @ref="grid0" ColumnWidth="200px"   AllowFiltering="true" FilterMode="FilterMode.Advanced" AllowPaging="true" AllowSorting="true" ShowPagingSummary="true" PageSizeOptions=@(new int[]{5, 10, 20, 30})
+            Data="@(students)" LoadData="@Grid0LoadData" Count="@count" TItem="LearningApp.Server.Models.SvgDB.Student" RowDoubleClick="@EditRow">
+            <Columns>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentID" Title="StudentID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentAdmissionNumber" Title="Student Admission Number">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentSurname" Title="Student Surname">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentFirstName" Title="Student First Name">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentOtherNames" Title="Student Other Names">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentSexID" Title="Student SexID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentDateOfBirth" Title="Student Date Of Birth">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentClassID" Title="Student ClassID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentNationalityID" Title="Student NationalityID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentStateID" Title="Student StateID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentLocalGovernmentAreaID" Title="Student Local Government AreaID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentTown" Title="Student Town">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentResidentialAddress" Title="Student Residential Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentPhoto" Title="Student Photo">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentRegistrationDate" Title="Student Registration Date">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="StudentGraduationDateOrDateStudentLeftTheSchool" Title="Student Graduation Date Or Date Student Left The School">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherSurname" Title="Father Surname">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherFirstName" Title="Father First Name">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherOtherNames" Title="Father Other Names">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherNationalityID" Title="Father NationalityID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherTelephone1" Title="Father Telephone1">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherTelephone2" Title="Father Telephone2">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherEmailAddress" Title="Father Email Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherProfessionID" Title="Father ProfessionID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="FatherResidentialAddress" Title="Father Residential Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherSurname" Title="Mother Surname">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherFirstName" Title="Mother First Name">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherOtherNames" Title="Mother Other Names">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherNationalityID" Title="Mother NationalityID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherTelephone1" Title="Mother Telephone1">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherTelephone2" Title="Mother Telephone2">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherEmailAddress" Title="Mother Email Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherProfessionID" Title="Mother ProfessionID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="MotherResidentialAddress" Title="Mother Residential Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianSurname" Title="Guardian Surname">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianFirstName" Title="Guardian First Name">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianOtherNames" Title="Guardian Other Names">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianNationalityID" Title="Guardian NationalityID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianTelephone1" Title="Guardian Telephone1">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianTelephone2" Title="Guardian Telephone2">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianEmailAddress" Title="Guardian Email Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianProfessionID" Title="Guardian ProfessionID">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Property="GuardianResidentialAddress" Title="Guardian Residential Address">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="LearningApp.Server.Models.SvgDB.Student" Filterable="false" Sortable="false" Width="70px" TextAlign="TextAlign.Center">
+                    <Template Context="student">
+
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Size="ButtonSize.Medium"
+                            Shade="Shade.Lighter" Variant="Variant.Flat"
+                            Click=@(args => GridDeleteButtonClick(args, student)) @onclick:stopPropagation="true" />
+                    </Template>
+                </RadzenDataGridColumn>
+            </Columns>
+
+        </RadzenDataGrid>
+
+    </RadzenColumn>
+  </RadzenRow>
+</RadzenStack>
